@@ -7,6 +7,7 @@
 //
 
 import JellyfinAPI
+import Foundation
 
 import SwiftUI
 
@@ -29,8 +30,7 @@ extension EditServerTaskView {
                         if let maxRuntimeTicks = taskTriggerInfo.maxRuntimeTicks {
                             Text(
                                 L10n.timeLimitLabelWithValue(
-                                    ServerTicks(maxRuntimeTicks)
-                                        .seconds.formatted(.hourMinute)
+                                   
                                 )
                             )
                         } else {
@@ -58,14 +58,14 @@ extension EditServerTaskView {
             case .dailyTrigger:
                 if let timeOfDayTicks = taskTriggerInfo.timeOfDayTicks {
                     return L10n.itemAtItem(
-                        triggerType.displayTitle,
-                        ServerTicks(timeOfDayTicks)
+                      if let dayOfWeek = taskTriggerInfo.dayOfWeek,
+   let timeOfDayTicks = taskTriggerInfo.timeOfDayTicks
                             .date.formatted(date: .omitted, time: .shortened)
                     )
                 }
             case .weeklyTrigger:
                 if let dayOfWeek = taskTriggerInfo.dayOfWeek,
-                   let timeOfDayTicks = taskTriggerInfo.timeOfDayTicks
+       let timeOfDayTicks = taskTriggerInfo.timeOfDayTicks
                 {
                     return L10n.itemAtItem(
                         dayOfWeek.rawValue.capitalized,
@@ -76,8 +76,10 @@ extension EditServerTaskView {
             case .intervalTrigger:
                 if let intervalTicks = taskTriggerInfo.intervalTicks {
                     return L10n.everyInterval(
-                        ServerTicks(intervalTicks)
-                            .seconds.formatted(.hourMinute)
+                        Duration.seconds(Int(ServerTicks(intervalTicks).seconds)).formatted(.hourMinuteAbbreviated)
+
+
+                        
                     )
                 }
             case .startupTrigger:
