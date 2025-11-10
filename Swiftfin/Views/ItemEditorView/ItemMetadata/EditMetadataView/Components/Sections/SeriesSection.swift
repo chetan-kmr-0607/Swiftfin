@@ -8,6 +8,7 @@
 
 import Combine
 import JellyfinAPI
+import Foundation
 import SwiftUI
 
 extension EditMetadataView {
@@ -101,8 +102,7 @@ extension EditMetadataView {
         private var runTimeView: some View {
             ChevronButton(
                 L10n.runtime,
-                subtitle: ServerTicks(item.runTimeTicks ?? 0)
-                    .seconds.formatted(.hourMinute),
+                subtitle: Duration.seconds(Int(ServerTicks(item.runTimeTicks ?? 0).seconds)).formatted(.hourMinuteAbbreviated),
                 description: L10n.episodeRuntimeDescription
             ) {
                 TextField(
